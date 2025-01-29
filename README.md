@@ -198,7 +198,7 @@ GET /api/auth/logout         - User logout
 GET /api/auth/user          - Get user profile
 PATCH /api/auth/update-password - Update password
 PATCH /api/auth/update-email    - Update email
-PATCH /api/auth/update-phone    - Update phone
+PATCH /api/auth.update-phone    - Update phone
 ```
 
 ### Admin Routes
@@ -319,6 +319,152 @@ const handleBase64Upload = async (base64String) => {
     resource_type: "auto"
   });
   return uploadResponse.secure_url;
+};
+```
+
+## 📸 Image Handling Implementation
+
+### Image Upload Flow
+```mermaid
+graph TD
+    A[Client Form Submit] -->|Base64/File Data| B[Server Endpoint]
+    B -->|Upload| C[Cloudinary]
+    C -->|Return URL| D[Server]
+    D -->|Save to| E[MongoDB]
+    E -->|Response| F[Client]
+```
+
+### Frontend Implementation
+```jsx
+// Image Upload Component Example
+const handleImageSubmit = async (formData) => {
+  try {
+    const response = await fetch(`${import.meta.env.VITE_BASE_URL}api/file/upload`, {
+      method: 'POST',
+      headers: {
+        'Authorization': authorizationToken,
+      },
+      body: formData
+    });
+    
+    if (!response.ok) throw new Error('Upload failed');
+    
+    const data = await response.json();
+    return data.url; // Cloudinary URL
+  } catch (error) {
+    toast.error("Upload failed");
+  }
+};
+```
+
+### Backend Implementation
+```javascript
+// Cloudinary Configuration
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET
+});
+
+// Upload Controller
+const uploadImage = async (req, res) => {
+  try {
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      folder: 'your_folder',
+      public_id: `${Date.now()}`,
+      resource_type: "auto"
+    });
+
+    // Save to MongoDB
+    const newImage = new ImageDetails({
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email,
+      personalDetails: req.body.personalDetails,
+      city: req.body.city,
+      province: req.body.province,
+      country: req.body.country,
+      image: {
+        public_id: result.public_id,
+        url: result.secure_url,
+      },
+      userId: req.user._id
+    });
+
+    await newImage.save();
+    res.status(201).json({
+      success: true,
+      url: result.secure_url
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+```
+
+### Supported Image Operations
+- Direct file upload
+- Base64 image upload
+- Multiple file uploads
+- Image optimization
+- Secure URL generation
+- Public/Private image handling
+
+### Image Model Integration
+```javascript
+const imageSchema = new mongoose.Schema({
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  personalDetails: { type: String, required: true },
+  city: { type: String, required: true },
+  province: { type: String, required: true },
+  country: { type: String, required: true },
+  image: {
+    public_id: { type: String, required: true },
+    url: { type: String, required: true }
+  },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  }
+}, { timestamps: true });
+```
+
+### Image Routes
+```javascript
+// Image Management Routes
+POST   /api/file/upload          - Upload single image
+POST   /api/file/uploads         - Upload multiple images
+GET    /api/file/images          - Get all images
+DELETE /api/file/delete-image/:id - Delete image
+PATCH  /api/file/update-status   - Update image status
+```
+
+### Query Status Management
+```javascript
+// Status Update Implementation
+const updateStatus = async (id, newStatus) => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_BASE_URL}api/file/update-status`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: authorizationToken,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ imageId: id, status: newStatus }),
+      }
+    );
+    // Handle response
+  } catch (error) {
+    console.error("Error updating status:", error);
+  }
 };
 ```
 
