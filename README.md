@@ -37,7 +37,7 @@ A full-featured admin dashboard with advanced image handling, role-based authent
 ## 🎥 Demo
 
 ### Video Demonstration
-[Watch the full demo video](https://drive.google.com/file/d/1UfLEgLu6KzTAP_Yhg3WdYbY9FIKfeYUL/view?usp=drive_link)
+[Watch the full demo video or Documentation](https://drive.google.com/file/d/1UfLEgLu6KzTAP_Yhg3WdYbY9FIKfeYUL/view?usp=drive_link)
 
 ### Key Features Demonstrated:
 - User Authentication & Authorization
@@ -142,7 +142,7 @@ ALLOWED_FILE_TYPES=jpeg,jpg,png,gif
 
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/MERN-Stack-project.git
+git clone https://github.com/MianAlikhalid/MERN-Stack-project.git
 
 # Install dependencies
 npm run setup
