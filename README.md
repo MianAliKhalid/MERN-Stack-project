@@ -13,21 +13,39 @@
 ## 📚 Table of Contents
 
 - [Overview](#-overview)
+- [Demo](#-demo)
 - [Tech Stack](#-tech-stack)
 - [Features](#-features)
 - [Installation](#-installation)
 - [Environment Setup](#-environment-setup)
 - [Project Structure](#-project-structure)
-- [API Documentation](#-api-documentation)
-- [Database Models](#-database-models)
-- [Image Handling](#-image-handling)
-- [Security](#-security)
-- [Contributing](#-contributing)
+- [API Documentation](#api-routes-documentation)
+- [Database Models](#database-models)
+- [Image Handling](#-image-handling-implementation)
+- [Security](#-security-implementation)
+- [Error Handling](#error-handling)
+- [Workflow](#-workflow)
 - [References](#-references)
+- [Contributing](#-contributing)
+- [Version History](#-version-history)
 - [License](#-license)
+- [Acknowledgements](#-acknowledgements)
 
 ## 🌟 Overview
 A full-featured admin dashboard with advanced image handling, role-based authentication, and comprehensive data management.
+
+## 🎥 Demo
+
+### Video Demonstration
+[Watch the full demo video](https://drive.google.com/file/d/1UfLEgLu6KzTAP_Yhg3WdYbY9FIKfeYUL/view?usp=drive_link)
+
+### Key Features Demonstrated:
+- User Authentication & Authorization
+- Admin Dashboard Operations
+- Image Upload & Management
+- Service Management
+- User Management
+- Contact Form Handling
 
 ## 🛠 Tech Stack
 
@@ -281,45 +299,6 @@ POST /api/file/service-image - Upload service image
   userId: ObjectId (ref: 'User'),
   timestamps: true
 }
-```
-
-## Image Handling
-
-### Cloudinary Integration
-```javascript
-// Cloudinary Configuration
-cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.API_KEY,
-  api_secret: process.env.API_SECRET
-});
-
-// Upload Function
-const uploadImage = async (file) => {
-  return await cloudinary.uploader.upload(file, {
-    folder: 'your_folder',
-    resource_type: 'auto'
-  });
-};
-```
-
-### Base64 Image Handling
-```javascript
-// Convert to Base64
-const toBase64 = file => new Promise((resolve, reject) => {
-  const reader = new FileReader();
-  reader.readAsDataURL(file);
-  reader.onload = () => resolve(reader.result);
-  reader.onerror = error => reject(error);
-});
-
-// Server-side Base64 handling
-const handleBase64Upload = async (base64String) => {
-  const uploadResponse = await cloudinary.uploader.upload(base64String, {
-    resource_type: "auto"
-  });
-  return uploadResponse.secure_url;
-};
 ```
 
 ## 📸 Image Handling Implementation
