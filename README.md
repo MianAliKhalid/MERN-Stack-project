@@ -13,7 +13,7 @@
 ## 📚 Table of Contents
 
 - [Overview](#-overview)
-- [Demo](#-demo)
+- [Demo / Documentation](#-demo)
 - [Tech Stack](#-tech-stack)
 - [Features](#-features)
 - [Installation](#-installation)
@@ -36,7 +36,7 @@ A full-featured admin dashboard with advanced image handling, role-based authent
 
 ## 🎥 Demo
 
-### Video Demonstration
+### Video Demonstration / Documentation
 [Watch the full demo video or Documentation](https://drive.google.com/file/d/1UfLEgLu6KzTAP_Yhg3WdYbY9FIKfeYUL/view?usp=drive_link)
 
 ### Key Features Demonstrated:
