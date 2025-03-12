@@ -1,5 +1,5 @@
 <div align="center">
-  <h1>🚀 MERN Stack Admin Dashboard</h1>
+  <h1>🚀 MERN Stack Project</h1>
   <p>A full-featured, modern admin dashboard with advanced image handling and role-based authentication</p>
   
   [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
